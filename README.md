@@ -1,4 +1,4 @@
-# Gemini Direct Ulauncher Extension
+# Gemini Direct ✨ Ulauncher Extension
 
 Get answers from Gemini AI directly in your Ulauncher window.
 
