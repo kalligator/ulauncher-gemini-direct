@@ -1,10 +1,10 @@
 {
 	"required_api_version": "2.0",
-	"name": "Gemini Direct",
+	"name": "Gemini Direct ✨",
 	"description": "Get answers from Gemini AI directly in your Ulauncher window.",
 	"developer_name": "Georgios Kalligas",
 	"icon": "images/icon.png",
-	"version": "1.0.05",
+	"version": "1.0.06",
 	"options": {
 		"query_debounce": 1.75
 	},
