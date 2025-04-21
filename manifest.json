@@ -1,0 +1,136 @@
+{
+	"required_api_version": "2.0",
+	"name": "Gemini Direct",
+	"description": "Get answers from Gemini AI directly in your Ulauncher window.",
+	"developer_name": "Georgios Kalligas",
+	"icon": "images/icon.png",
+	"version": "1.0.05",
+	"options": {
+		"query_debounce": 1.75
+	},
+	"preferences": [
+		{
+			"id": "keyword",
+			"type": "keyword",
+			"name": "Primary Keyword",
+			"description": "The keyword to trigger the extension (e.g., gm)",
+			"default_value": "gm"
+		},
+		{
+			"id": "alt_keyword",
+			"type": "keyword",
+			"name": "Alternative Keyword",
+			"description": "Optional secondary keyword (useful for non-Latin keyboards)",
+			"default_value": "γμ"
+		},
+		{
+			"id": "api_key",
+			"type": "input",
+			"name": "Gemini API Key",
+			"description": "Required. Get from Google AI Studio (aistudio.google.com/apikey)",
+			"default_value": ""
+		},
+		{
+			"id": "model",
+			"type": "select",
+			"name": "Model",
+			"description": "Select the Gemini model to use",
+			"default_value": "models/gemini-2.0-flash",
+			"options": [
+				{"text": "Gemini 2.0 Flash-Lite (Fastest)", "value": "models/gemini-2.0-flash-lite"},
+				{"text": "Gemini 2.0 Flash (Fast & Balanced)", "value": "models/gemini-2.0-flash"},
+				{"text": "Gemma 3 12B (Capable)", "value": "models/gemma-3-12b-it"},
+				{"text": "Gemini 2.0 Pro Exp (Enhanced)", "value": "models/gemini-2.0-pro-exp"},
+				{"text": "Gemini 2.5 Pro Exp (Advanced)", "value": "models/gemini-2.5-pro-exp-03-25"}
+			]
+		},
+		{
+			"id": "custom_model",
+			"type": "input",
+			"name": "Custom Model",
+			"description": "Enter a specific model name (e.g., models/gemini-1.5-flash). Overrides above selection.",
+			"default_value": ""
+		},
+		{
+			"id": "prompt_context",
+			"type": "input",
+			"name": "Prompt Context (Optional)",
+			"description": "Add instructions/background to guide responses (tone, audience etc.)",
+			"default_value": ""
+		},
+		{
+			"id": "temperature",
+			"type": "input",
+			"name": "Temperature [0-1] (Optional)",
+			"description": "Controls response randomness (0=focused, 1=creative).",
+			"placeholder": "0.44",
+			"default_value": "0.44"
+		},
+		{
+			"id": "wrap_width",
+			"type": "input",
+			"name": "Text Wrap Width (Characters)",
+			"description": "Max characters per line in the displayed answer.",
+			"default_value": "45"
+		},
+        {
+			"id": "wide_script_factor",
+			"type": "input",
+			"name": "Wide Script Width Factor",
+			"description": "Adjust wrap width for non-Latin scripts (e.g., Greek, CJK etc). Lower value = shorter lines. Recommended range: [0.2 - 1.8]",
+			"placeholder": "0.96",
+			"default_value": "0.96",
+            "validation": {
+				"type": "regex",
+				"pattern": "^\\d*\\.?\\d+$",
+				"error_message": "Invalid number format. Please enter a positive value like 0.96 or 1.10"
+			}
+		},
+		{
+			"id": "log_enabled",
+			"type": "select",
+			"name": "Enable Q&A Logging",
+			"description": "Save queries and answers to a log file?",
+			"default_value": "false",
+			"options": [
+				{"text": "Yes", "value": "true"},
+				{"text": "No", "value": "false"}
+			]
+		},
+		{
+			"id": "show_log_line",
+			"type": "select",
+			"name": "Show 'Logged' Line",
+			"description": "Show confirmation below response when logged (if logging enabled).",
+			"default_value": "true",
+			"options": [
+				{"text": "Yes", "value": "true"},
+				{"text": "No", "value": "false"}
+			]
+		},
+		{
+			"id": "log_path",
+			"type": "input",
+			"name": "Log File Path",
+			"description": "Full path for log file (default: ~/Documents/gemini_direct_qa.log)",
+			"placeholder": "~/Documents/gemini_direct_qa.log",
+			"validation": {
+				"type": "regex",
+				"pattern": "^~?(/[^/ ]*)+/?$",
+				"error_message": "Invalid path. Use absolute path or ~ for home."
+			},
+			"default_value": "~/Documents/gemini_direct_qa.log"
+		},
+		{
+			"id": "debug_mode",
+			"type": "select",
+			"name": "Enable Debug Mode",
+			"description": "Show detailed errors and API info in Ulauncher/logs.",
+			"default_value": "false",
+			"options": [
+				{"text": "Yes", "value": "true"},
+				{"text": "No", "value": "false"}
+			]
+		}
+	]
+}
