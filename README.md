@@ -6,7 +6,7 @@ Get answers from Gemini AI directly in your Ulauncher window.
 
 ## Installation
 
-1.  Open Ulauncher preferences.
+1.  Open [Ulauncher](https://ulauncher.io/) preferences.
 2.  Go to the "Extensions" tab.
 3.  Click "Add Extension".
 4.  Paste the URL of this repository: `https://github.com/kalligator/ulauncher-gemini-direct`.
