@@ -4,7 +4,7 @@
 	"description": "Get answers from Gemini AI directly in your Ulauncher window.",
 	"developer_name": "Georgios Kalligas",
 	"icon": "images/icon.png",
-	"version": "1.0.06",
+	"version": "1.0.07",
 	"options": {
 		"query_debounce": 1.75
 	},
@@ -39,9 +39,10 @@
 			"options": [
 				{"text": "Gemini 2.0 Flash-Lite (Fastest)", "value": "models/gemini-2.0-flash-lite"},
 				{"text": "Gemini 2.0 Flash (Fast & Balanced)", "value": "models/gemini-2.0-flash"},
+				{"text": "Gemini 2.5 Flash Preview (Fast & Capable)", "value": "models/gemini-2.5-flash-preview-04-17"},
 				{"text": "Gemma 3 12B (Capable)", "value": "models/gemma-3-12b-it"},
-				{"text": "Gemini 2.0 Pro Exp (Enhanced)", "value": "models/gemini-2.0-pro-exp"},
-				{"text": "Gemini 2.5 Pro Exp (Advanced)", "value": "models/gemini-2.5-pro-exp-03-25"}
+				{"text": "Gemini 2.0 Pro Exp (Enhanced, Slower)", "value": "models/gemini-2.0-pro-exp"},
+				{"text": "Gemini 2.5 Pro Exp (Advanced, Slowest)", "value": "models/gemini-2.5-pro-exp-03-25"}
 			]
 		},
 		{

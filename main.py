@@ -212,7 +212,7 @@ class KeywordQueryEventListener(EventListener):
         prefs = extension.preferences
         # Set defaults directly in the config dictionary
         config = {
-            'model': 'models/gemini-2.0-flash',
+            'model': 'models/gemini-2.5-flash-preview-04-17',
             'custom_model': '',
             'api_key': '',
             'wrap_width': 44, # Default wrap width from your screenshot/code
