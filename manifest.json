@@ -35,7 +35,7 @@
 			"type": "select",
 			"name": "Model",
 			"description": "Select the Gemini model to use",
-			"default_value": "models/gemini-2.0-flash",
+			"default_value": "gemini-2.5-flash-preview-04-17",
 			"options": [
 				{"text": "Gemini 2.0 Flash-Lite (Fastest)", "value": "models/gemini-2.0-flash-lite"},
 				{"text": "Gemini 2.0 Flash (Fast & Balanced)", "value": "models/gemini-2.0-flash"},
@@ -49,7 +49,7 @@
 			"id": "custom_model",
 			"type": "input",
 			"name": "Custom Model",
-			"description": "Enter a specific model name (e.g., models/gemini-1.5-flash). Overrides above selection.",
+			"description": "Enter a specific model name (e.g., models/gemini-1.5-pro). Overrides above selection.",
 			"default_value": ""
 		},
 		{
@@ -72,7 +72,7 @@
 			"type": "input",
 			"name": "Text Wrap Width (Characters)",
 			"description": "Max characters per line in the displayed answer.",
-			"default_value": "45"
+			"default_value": "44"
 		},
         {
 			"id": "wide_script_factor",

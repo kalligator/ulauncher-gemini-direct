@@ -16,7 +16,7 @@ Get answers from Gemini AI directly in your Ulauncher window.
 
 ## Changelog
 
-### Version 1.0.07 (2025-04-24)
+### 2025-04-24
 • Added a new option to the models list: `models/gemini-2.5-flash-preview-04-17` and made it default.
 
 ## Usage
@@ -50,7 +50,7 @@ Get answers from Gemini AI directly in your Ulauncher window.
 *   **Model**: Select the primary Gemini model to use. Options include:
     *   **`models/gemini-2.0-flash-lite`**: Fastest option, potentially less detailed responses.
     *   **`models/gemini-2.0-flash`**: A good combination of speed and capability among 2.0 models.
-    *   **`models/gemini-2.5-flash-preview-04-17`** (Default): Improved capability over 2.0 Flash and almost as fast, offering the ideal balance of speed and capability.
+    *   **`models/gemini-2.5-flash-preview-04-17`** (Default): Better than 2.0 Flash but not as fast, offering the ideal balance of speed and capability.
     *   **`models/gemma-3-12b-it`**: Google's open model, generally capable.
     *   **`models/gemini-2.0-pro-exp`**: More capable but noticeably slower experimental model.
     *   **`models/gemini-2.5-pro-exp-03-25`**: Most advanced (and slowest) experimental model typically available.
