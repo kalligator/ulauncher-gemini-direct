@@ -16,8 +16,11 @@ Get answers from Gemini AI directly in your Ulauncher window.
 
 ## Changelog
 
+### 2025-06-01
+• Added the `gemini-2.5-flash-preview-05-20` option to the models list and made it default. The previous model is still kept as some may still prefer it.
+• Did some code tidying up.
 ### 2025-04-24
-• Added a new option to the models list: `models/gemini-2.5-flash-preview-04-17` and made it default.
+• Added a new option to the models list: `gemini-2.5-flash-preview-04-17` and made it default.
 
 ## Usage
 
@@ -48,13 +51,15 @@ Get answers from Gemini AI directly in your Ulauncher window.
     *   The *alternative* keyword is useful if your primary language uses a non-Latin script (e.g., Greek, Cyrillic, CJK, Arabic), allowing you to query without switching keyboard layouts first.
 *   **Gemini API Key**: **Required.** Obtain your free key from [Google AI Studio > Get API Key](https://aistudio.google.com/app/apikey). Keep this key private. The API provides a free tier sufficient for most users of this extension (often limited to ~15 requests per minute).
 *   **Model**: Select the primary Gemini model to use. Options include:
-    *   **`models/gemini-2.0-flash-lite`**: Fastest option, potentially less detailed responses.
-    *   **`models/gemini-2.0-flash`**: A good combination of speed and capability among 2.0 models.
-    *   **`models/gemini-2.5-flash-preview-04-17`** (Default): Better than 2.0 Flash but not as fast, offering the ideal balance of speed and capability.
-    *   **`models/gemma-3-12b-it`**: Google's open model, generally capable.
-    *   **`models/gemini-2.0-pro-exp`**: More capable but noticeably slower experimental model.
-    *   **`models/gemini-2.5-pro-exp-03-25`**: Most advanced (and slowest) experimental model typically available.
-*   **Custom Model**: Specify any valid Gemini model name found in the [Gemini API documentation](https://ai.google.dev/gemini-api/docs/pricing) (e.g., `models/gemini-1.5-pro`).  This overrides the "Model" selection above. Use this if the model list becomes outdated or you want to use a different model available through the API.
+    *   **`gemini-2.0-flash-lite`**: Fastest option, potentially less detailed responses.
+    *   **`gemini-2.0-flash`**: A good combination of speed and capability among 2.0 models.
+    *   **`gemini-2.5-flash-preview-04-17`**: Better than 2.0 Flash but not as fast, offering the ideal balance of speed and capability.
+    *   **`gemini-2.5-flash-preview-05-20`** (Default): A newer version of the above model. May not be superior to the 04-17 version in all cases.
+    *   **`gemini-2.0-pro-exp`**: More capable but noticeably slower experimental model.
+    *   **`gemini-2.5-pro-exp-03-25`**: Most advanced (and slowest) experimental model typically available.
+    *   **`gemma-3n-e4b-it`**: Google's open model, fast.
+    *   **`gemma-3-27b-it`**: Google's open model, generally capable.
+*   **Custom Model**: Specify any valid Gemini model name found in the [Gemini API documentation](https://ai.google.dev/gemini-api/docs/pricing) (e.g. `gemini-1.5-pro`).  This overrides the "Model" selection above. Use this if the model list becomes outdated or you want to use a different model available through the API.
 *   **Prompt Context (Optional)**: Add persistent instructions or background information that will be included with *every* query to guide the AI's responses.
     *   *Examples:* `"Explain this concept like I'm 12 years old:"`, `"Translate the following text to <Language>:"`, `"Act as a helpful Linux terminal assistant:"`, `"Summarize the key points in bullet form:"`
 *   **Temperature [0-1] (Optional)**: Controls the randomness of the AI's output.
