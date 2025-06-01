@@ -212,10 +212,10 @@ class KeywordQueryEventListener(EventListener):
         prefs = extension.preferences
         # Set defaults directly in the config dictionary
         config = {
-            'model': 'models/gemini-2.5-flash-preview-04-17',
+            'model': 'gemini-2.5-flash-preview-05-20',
             'custom_model': '',
             'api_key': '',
-            'wrap_width': 44, # Default wrap width from your screenshot/code
+            'wrap_width': 43, # Default wrap width from your screenshot/code
             'wide_script_factor': 0.96, # Default script factor
             'log_enabled': False,
             'show_log_line': True,
@@ -289,6 +289,9 @@ class KeywordQueryEventListener(EventListener):
 
         # --- Determine model to use ---
         config['model_to_use'] = config['custom_model'] if config['custom_model'] else config['model']
+        # Prepend 'models/' if not already present
+        if not config['model_to_use'].startswith('models/'):
+            config['model_to_use'] = f"models/{config['model_to_use']}"
         config['model_name'] = config['model_to_use'].split('/')[-1]
 
         # --- Adjust log settings ---
