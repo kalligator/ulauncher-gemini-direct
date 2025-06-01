@@ -4,7 +4,6 @@
 	"description": "Get answers from Gemini AI directly in your Ulauncher window.",
 	"developer_name": "Georgios Kalligas",
 	"icon": "images/icon.png",
-	"version": "1.0.07",
 	"options": {
 		"query_debounce": 1.75
 	},
