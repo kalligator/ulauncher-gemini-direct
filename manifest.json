@@ -40,6 +40,7 @@
 				{"text": "Gemini 2.0 Flash (Fast & Balanced)", "value": "gemini-2.0-flash"},
 				{"text": "Gemini 2.5 Flash Preview 04-17 (Fast & Capable)", "value": "gemini-2.5-flash-preview-04-17"},
 				{"text": "Gemini 2.5 Flash Preview 05-20 (Fast & Capable)", "value": "gemini-2.5-flash-preview-05-20"},
+				{"text": "Gemini 2.5 Flash-Lite Preview (Fast & Lightweight)", "value": "gemini-2.5-flash-lite-preview-06-17"},
 				{"text": "Gemini 2.0 Pro Exp (Enhanced, Slower)", "value": "gemini-2.0-pro-exp"},
 				{"text": "Gemini 2.5 Pro Exp (Advanced, Slowest)", "value": "gemini-2.5-pro-exp-03-25"},
 				{"text": "Gemma 3n (Open source, Fast)", "value": "gemma-3n-e4b-it"},
