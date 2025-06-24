@@ -6,16 +6,19 @@ Get answers from Gemini AI directly in your Ulauncher window.
 
 ## Installation
 
-1.  Open [Ulauncher](https://ulauncher.io/) preferences.
-2.  Go to the "Extensions" tab.
-3.  Click "Add Extension".
-4.  Paste the URL of this repository: `https://github.com/kalligator/ulauncher-gemini-direct`.
-5.  Click "Add".
-6.  Configure the extension preferences, **especially setting your API Key**. The Gemini API offers a generous **free tier**, suitable for typical usage of this extension.
+1.  Open [Ulauncher](https://ulauncher.io/) preferences
+2.  Go to the "Extensions" tab
+3.  Click "Add Extension"
+4.  Paste the URL of this repository: `https://github.com/kalligator/ulauncher-gemini-direct`
+5.  Click "Add"
+6.  Configure the extension preferences, **especially setting your API Key**. The Gemini API offers a generous **free tier**, suitable for typical usage of this extension
 
 
 ## Changelog
 
+### 2025-06-24
+• Added the new `gemini-2.5-flash-lite-preview-06-17` model which replaced `gemini-2.0-flash-lite`. 
+• Added a CLAUDE.md helper file.
 ### 2025-06-01
 • Added the `gemini-2.5-flash-preview-05-20` option to the models list and made it default. The previous model is still kept as some may still prefer it.
 • Did some code tidying up.
