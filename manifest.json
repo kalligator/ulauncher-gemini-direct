@@ -36,7 +36,7 @@
 			"description": "Select the Gemini model to use",
 			"default_value": "gemini-2.5-flash-preview-05-20",
 			"options": [
-				{"text": "Gemini 2.0 Flash-Lite (Fastest)", "value": "gemini-2.0-flash-lite"},
+				{"text": "Gemini 2.5 Flash-Lite Preview (Fastest)", "value": "gemini-2.5-flash-lite-preview-06-17"},
 				{"text": "Gemini 2.0 Flash (Fast & Balanced)", "value": "gemini-2.0-flash"},
 				{"text": "Gemini 2.5 Flash Preview 04-17 (Fast & Capable)", "value": "gemini-2.5-flash-preview-04-17"},
 				{"text": "Gemini 2.5 Flash Preview 05-20 (Fast & Capable)", "value": "gemini-2.5-flash-preview-05-20"},
