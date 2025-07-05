@@ -5,7 +5,7 @@
 	"developer_name": "Georgios Kalligas",
 	"icon": "images/icon.png",
 	"options": {
-		"query_debounce": 1.75
+		"query_debounce": 2
 	},
 	"preferences": [
 		{
@@ -34,15 +34,14 @@
 			"type": "select",
 			"name": "Model",
 			"description": "Select the Gemini model to use",
-			"default_value": "gemini-2.5-flash-preview-05-20",
+			"default_value": "gemini-2.5-flash",
 			"options": [
 				{"text": "Gemini 2.5 Flash-Lite Preview (Fastest)", "value": "gemini-2.5-flash-lite-preview-06-17"},
 				{"text": "Gemini 2.0 Flash (Fast & Balanced)", "value": "gemini-2.0-flash"},
 				{"text": "Gemini 2.5 Flash Preview 04-17 (Fast & Capable)", "value": "gemini-2.5-flash-preview-04-17"},
-				{"text": "Gemini 2.5 Flash Preview 05-20 (Fast & Capable)", "value": "gemini-2.5-flash-preview-05-20"},
-				{"text": "Gemini 2.0 Pro Exp (Enhanced, Slower)", "value": "gemini-2.0-pro-exp"},
-				{"text": "Gemini 2.5 Pro Exp (Advanced, Slowest)", "value": "gemini-2.5-pro-exp-03-25"},
-				{"text": "Gemma 3n (Open source, Fast)", "value": "gemma-3n-e4b-it"},
+				{"text": "Gemini 2.5 Flash (Fast & More Capable)", "value": "gemini-2.5-flash"},
+				{"text": "Gemini 2.5 Pro (Advanced, Slowest)", "value": "gemini-2.5-pro"},
+				{"text": "Gemma 3n 4B (Open source, Fast)", "value": "gemma-3n-e4b-it"},
 				{"text": "Gemma 3 27B (Open source, Capable)", "value": "gemma-3-27b-it"}
 			]
 		},
@@ -50,7 +49,7 @@
 			"id": "custom_model",
 			"type": "input",
 			"name": "Custom Model",
-			"description": "Enter a specific model name (e.g. gemini-1.5-pro). Overrides above selection.",
+			"description": "Enter a specific model name (e.g. gemini-2.0-flash-lite). Overrides above selection.",
 			"default_value": ""
 		},
 		{
