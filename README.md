@@ -16,11 +16,16 @@ Get answers from Gemini AI directly in your Ulauncher window.
 
 ## Changelog
 
+### 2025-07-05
+• Updated the models list. Free tier Pro is back again.
+
 ### 2025-06-24
 • Added the new `gemini-2.5-flash-lite-preview-06-17` model which replaced `gemini-2.0-flash-lite`. 
+
 • Added a CLAUDE.md helper file.
 ### 2025-06-01
 • Added the `gemini-2.5-flash-preview-05-20` option to the models list and made it default. The previous model is still kept as some may still prefer it.
+
 • Did some code tidying up.
 ### 2025-04-24
 • Added a new option to the models list: `gemini-2.5-flash-preview-04-17` and made it default.
