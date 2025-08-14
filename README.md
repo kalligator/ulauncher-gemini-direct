@@ -16,6 +16,9 @@ Get answers from Gemini AI directly in your Ulauncher window.
 
 ## Changelog
 
+### 2025-08-14
+• Models cleanup.
+
 ### 2025-07-05
 • Updated the models list. Free tier Pro is back again.
 
