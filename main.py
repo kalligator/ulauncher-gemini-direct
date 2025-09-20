@@ -15,7 +15,7 @@ from ulauncher.api.shared.action.CopyToClipboardAction import CopyToClipboardAct
 # Hardcoded system prompt that will be included in every request
 SYSTEM_PROMPT = """You are responding through an ephemeral interface with no follow-up capability so you need to provide a single comprehensive response that does not ask for further clarifications/information.
 
-Your primary rule is: **Detect the language and script of the user's query and respond accordingly.**
+Your primary task is: **Detect the language and script of the user's query and respond accordingly.**
 - If the query is in English, the response MUST be in English.
 - If the query is in a standard language script (e.g., Greek script, Cyrillic), respond in that SAME language and script.
 
@@ -212,17 +212,17 @@ class KeywordQueryEventListener(EventListener):
         prefs = extension.preferences
         # Set defaults directly in the config dictionary
         config = {
-            'model': 'gemini-2.5-flash-preview-05-20',
+            'model': 'gemini-2.5-flash',
             'custom_model': '',
             'api_key': '',
-            'wrap_width': 43, # Default wrap width from your screenshot/code
-            'wide_script_factor': 0.96, # Default script factor
+            'wrap_width': 43,
+            'wide_script_factor': 0.96,
             'log_enabled': False,
             'show_log_line': True,
             'debug_mode': False,
             'log_path': '',
             'prompt_context': '',
-            'temperature': 0.44 # Default temperature
+            'temperature': 0.44
         }
 
         # Update config with preferences if they exist
