@@ -48,6 +48,22 @@ Get answers from Gemini AI directly in your Ulauncher window.
 4.  Wait a moment for the answer to appear directly in the Ulauncher results list.
 5.  Click on the result item containing the answer to copy the full, unformatted answer text to your clipboard.
 
+### Custom Prompt Templates
+
+You can use prompt templates by prefixing your query with a `prompt_id`:
+
+*   `gm fix <text>` — Corrects spelling, grammar, and punctuation (built-in).
+*   `gm translate <text>` — Translates text to English.
+*   `gm summarize <text>` — Summarizes the text.
+*   `gm explain <text>` — Explains in simple terms.
+
+**Examples:**
+*   `gm fix Ths is a tset sentance with erors` → Returns the corrected text.
+*   `gm translate Bonjour le monde` → Returns "Hello world".
+*   `gm What is the capital of France?` → Standard query (no prompt template applied).
+
+You can define your own prompt templates in the extension preferences via a JSON object (see **Custom Prompt Templates** in Preferences).
+
 **Tip**: To prevent sending incomplete queries while typing, first type your full question in Ulauncher, then press `Home` and add the keyword (`gm `) at the start.
 
 ## Features
@@ -57,6 +73,7 @@ Get answers from Gemini AI directly in your Ulauncher window.
 *   **Clipboard Integration**: Easily copy answers with a click.
 *   **Query Logging**: Optionally save your questions and the model's answers to a local text file.
 *   **Proxy Support**: Configure custom API URLs for enterprise environments or proxy access.
+*   **Custom Prompt Templates**: Use `prompt_id` prefix (e.g., `fix`, `translate`) to apply task-specific prompts. Define your own via JSON in preferences.
 *   **Customization**:
     *   Adjust the AI's creativity/focus via **Temperature**.
     *   Provide persistent **Prompt Context** to guide all responses.
@@ -80,6 +97,10 @@ Get answers from Gemini AI directly in your Ulauncher window.
 *   **Custom Model**: Specify any valid Gemini model name found in the [Gemini API documentation](https://ai.google.dev/gemini-api/docs/pricing) (e.g. `gemini-2.0-flash-lite`).  This overrides the "Model" selection above. Use this if the model list becomes outdated or you want to use a model that is not listed in the options.
 *   **Prompt Context (Optional)**: Add persistent instructions or background information that will be included with *every* query to guide the AI's responses.
     *   *Examples:* `"Explain this concept like I'm 12 years old:"`, `"Translate the following text to <Language>:"`, `"Act as a helpful Linux terminal assistant:"`, `"Summarize the key points in bullet form:"`
+*   **Custom Prompt Templates (JSON)**: *(Optional)* Define custom prompt templates as a JSON object. Each key is a `prompt_id` you can use as a prefix in your query. A built-in `fix` prompt for spelling correction is always available. Example:
+    ```json
+    {"translate": "Translate this text to English:", "summarize": "Summarize this text:"}
+    ```
 *   **Temperature [0-1] (Optional)**: Controls the randomness of the AI's output.
     *   Lower values (e.g., `0.2`) produce more predictable, focused answers.
     *   Higher values (e.g., `0.9`) result in more creative or diverse responses.
