@@ -130,7 +130,7 @@ def format_for_display(text, max_width=44, wide_script_factor=0.96):
     return '\n'.join(lines)
 
 
-def log_qa(log_path, query, response, model_name, debug_mode=False):
+def log_qa(log_path, query, response, model_name, debug_mode=False, prompt_id=None, generated_prompt=None):
     """Logs the question and answer to a file."""
     if not log_path:
         return False
@@ -140,9 +140,14 @@ def log_qa(log_path, query, response, model_name, debug_mode=False):
         timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
         clean_response = clean_markdown(response)
         with open(log_path, 'a', encoding='utf-8') as f:
-            f.write(f"\n--- {timestamp} --- response by {model_name}\n")
-            f.write(f"Q: {query}\n\n")
-            f.write(f"A: {clean_response}\n")
+            f.write(f"\n--- {timestamp} --- response by {model_name}")
+            if prompt_id:
+                f.write(f" [prompt_id: {prompt_id}]")
+            f.write(f"\n")
+            f.write(f"Q: {query}\n")
+            if generated_prompt and debug_mode:
+                f.write(f"\nGenerated Prompt:\n{generated_prompt}\n")
+            f.write(f"\nA: {clean_response}\n")
         return True
     except Exception as e:
         # Only print logging errors if debug mode is on
@@ -223,6 +228,7 @@ class KeywordQueryEventListener(EventListener):
             'debug_mode': False,
             'log_path': '',
             'prompt_context': '',
+            'custom_prompts': '',
             'temperature': 0.44
         }
 
@@ -236,6 +242,7 @@ class KeywordQueryEventListener(EventListener):
         config['debug_mode'] = prefs.get('debug_mode', 'false') == 'true'
         config['log_path'] = prefs.get('log_path', config['log_path']).strip()
         config['prompt_context'] = prefs.get('prompt_context', config['prompt_context']).strip()
+        config['custom_prompts'] = prefs.get('custom_prompts', config['custom_prompts']).strip()
 
 
         # --- Validate and set wrap_width ---
@@ -308,15 +315,57 @@ class KeywordQueryEventListener(EventListener):
         else:
              config['log_path'] = None # Explicitly set to None if logging disabled and no path given
 
+        # Parse custom prompts into a dictionary
+        config['parsed_prompts'] = self._parse_custom_prompts(config['custom_prompts'])
+
         return config
 
-    def _build_prompt(self, query, context):
-        """Builds the full prompt including system message and context."""
+    def _parse_custom_prompts(self, custom_prompts_str):
+        """Parse custom prompts JSON string into a dictionary."""
+        prompts = {
+            'fix': 'Please correct any spelling, grammar, and punctuation errors in the following text while preserving its original meaning and tone:'
+        }
+
+        if custom_prompts_str:
+            try:
+                custom_prompts = json.loads(custom_prompts_str)
+                if isinstance(custom_prompts, dict):
+                    prompts.update(custom_prompts)
+            except json.JSONDecodeError as e:
+                print(f"[Error] Invalid JSON in custom_prompts: {e}")
+
+        return prompts
+
+    def _parse_query(self, query):
+        """Parse query to check for custom prompt format <prompt_id> <text>."""
+        query = query.strip()
+        if ' ' in query:
+            parts = query.split(' ', 1)
+            prompt_id = parts[0].strip()
+            remaining_text = parts[1].strip()
+            return prompt_id, remaining_text
+        else:
+            return query, ""
+
+    def _build_prompt(self, query, context, custom_prompts=None):
+        """Builds the full prompt including system message, context, and custom prompts."""
+        prompt_id, actual_query = self._parse_query(query)
+
         if context:
             full_context = f"{SYSTEM_PROMPT}\n\n{context}"
-            return f"{full_context}\n\n{query}"
         else:
-            return f"{SYSTEM_PROMPT}\n\n{query}"
+            full_context = SYSTEM_PROMPT
+
+        # Check if the first word is a valid custom prompt
+        if prompt_id and custom_prompts and prompt_id in custom_prompts:
+            custom_prompt = custom_prompts[prompt_id]
+            full_context = f"{full_context}\n\n{custom_prompt}"
+            final_query = actual_query if actual_query else "Please provide text to process."
+            generated_prompt = f"{full_context}\n\n{final_query}"
+            return generated_prompt, prompt_id
+        else:
+            generated_prompt = f"{full_context}\n\n{query}"
+            return generated_prompt, None
 
     def _call_gemini_api(self, config, query):
         """Makes the API call to Gemini."""
@@ -324,11 +373,15 @@ class KeywordQueryEventListener(EventListener):
         url = f"{base_url}/{config['model_to_use']}:generateContent"
         headers = {"Content-Type": "application/json"}
         params = {"key": config['api_key']}
-        prompt = self._build_prompt(query, config['prompt_context'])
+        prompt, prompt_id = self._build_prompt(query, config['prompt_context'], config['parsed_prompts'])
         payload = {
             "contents": [{"parts": [{"text": prompt}]}],
             "generationConfig": {"temperature": config['temperature']}
         }
+
+        # Store prompt info for later use in logging
+        config['_generated_prompt'] = prompt
+        config['_prompt_id'] = prompt_id
 
         if config['debug_mode']:
             masked_params = {"key": mask_api_key(config['api_key'])}
@@ -396,7 +449,15 @@ class KeywordQueryEventListener(EventListener):
                 log_success = False
                 # Attempt logging only if enabled and path is valid
                 if config['log_enabled'] and config['log_path']:
-                    log_success = log_qa(config['log_path'], query, response_text, config['model_name'], config['debug_mode'])
+                    log_success = log_qa(
+                        config['log_path'],
+                        query,
+                        response_text,
+                        config['model_name'],
+                        config['debug_mode'],
+                        config.get('_prompt_id'),
+                        config.get('_generated_prompt')
+                    )
                     # Debug log only if logging failed
                     if not log_success and config['debug_mode']:
                          print(f"[Debug] Failed to log Q&A to {config['log_path']}")

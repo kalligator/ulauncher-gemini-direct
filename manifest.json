@@ -68,6 +68,13 @@
 			"default_value": ""
 		},
 		{
+			"id": "custom_prompts",
+			"type": "text",
+			"name": "Custom Prompt Templates (JSON)",
+			"description": "Define custom prompts in JSON format. Use with 'gm prompt_id your_query' (space-separated). Default 'fix' prompt included for spelling correction.",
+			"default_value": "{\"translate\": \"Translate this text to English:\", \"summarize\": \"Summarize this text:\", \"explain\": \"Explain this in simple terms:\"}"
+		},
+		{
 			"id": "temperature",
 			"type": "input",
 			"name": "Temperature [0-1] (Optional)",
