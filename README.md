@@ -1,101 +1,71 @@
 # Gemini Direct ✨ Ulauncher Extension
 
-Get answers from Gemini AI directly in your Ulauncher window.
+Instant Google Gemini answers directly in your Ulauncher window.
 
 ![Gemini Direct Ulauncher Extension Demo](images/ul_ext_gemini-direct_demo.gif)
 
-## Installation
+## Quick Start
 
-1.  Open [Ulauncher](https://ulauncher.io/) preferences
-2.  Go to the "Extensions" tab
-3.  Click "Add Extension"
-4.  Paste the URL of this repository: `https://github.com/kalligator/ulauncher-gemini-direct`
-5.  Click "Add"
-6.  Configure the extension preferences, **especially setting your API Key**. The Gemini API offers a generous **free tier**, suitable for typical usage of this extension
+1. **Install**: Ulauncher Preferences → **Extensions** → **Add Extension** → paste:
+   ```
+   https://github.com/kalligator/ulauncher-gemini-direct
+   ```
+2. **API Key**: Get an API key from [Google AI Studio](https://aistudio.google.com/app/apikey). Add it to Extension Preferences, or set `export GEMINI_API_KEY="your-key"` in your shell.
+3. **Use**: Open Ulauncher, type `gm <question>` (or alternative keyword `γ`), and click the result to copy to clipboard.
 
+> **Tip**: To avoid triggering queries while typing, type your question first, press `Home`, and prefix with `gm `.
 
-## Changelog
-
-### 2025-12-13
-• Added Custom API URL support for proxy access and enterprise environments.
-
-### 2025-09-20
-• Updated model list and descriptions, some code cleanup.
-
-### 2025-08-14
-• Models cleanup.
-
-### 2025-07-05
-• Updated the models list. Free tier Pro is back again.
-
-### 2025-06-24
-• Added the new `gemini-2.5-flash-lite-preview-06-17` model which replaced `gemini-2.0-flash-lite`. 
-
-• Added a CLAUDE.md helper file.
-### 2025-06-01
-• Added the `gemini-2.5-flash-preview-05-20` option to the models list and made it default. The previous model is still kept as some may still prefer it.
-
-• Did some code tidying up.
-
-### 2025-04-24
-• Added a new option to the models list: `gemini-2.5-flash-preview-04-17` and made it default.
-
-## Usage
-
-1.  Activate Ulauncher (usually `Ctrl+Space`).
-2.  Type the primary keyword (default: `gm`) or the alternative keyword followed by a space.
-3.  Type your question or prompt.
-4.  Wait a moment for the answer to appear directly in the Ulauncher results list.
-5.  Click on the result item containing the answer to copy the full, unformatted answer text to your clipboard.
-
-**Tip**: To prevent sending incomplete queries while typing, first type your full question in Ulauncher, then press `Home` and add the keyword (`gm `) at the start.
+---
 
 ## Features
 
-*   **Instant Answers**: Get AI-powered responses directly within Ulauncher.
-*   **Model Selection**: Choose from common Gemini models or specify a custom one.
-*   **Clipboard Integration**: Easily copy answers with a click.
-*   **Query Logging**: Optionally save your questions and the model's answers to a local text file.
-*   **Proxy Support**: Configure custom API URLs for enterprise environments or proxy access.
-*   **Customization**:
-    *   Adjust the AI's creativity/focus via **Temperature**.
-    *   Provide persistent **Prompt Context** to guide all responses.
-    *   Control the **Text Wrap Width** for readability in Ulauncher.
-    *   Set primary and **Alternative Keywords** for easier access.
-*   **Debugging**: Enable **Debug Mode** for detailed troubleshooting information in logs.
+* **Sub-Second Answers**: Direct ephemeral answers formatted for launcher width.
+* **Smart Language & Script Handling**: Matches query language. Greeklish and Latin-transliterated queries automatically resolve into correct native script.
+* **Curated Models**: Common Gemini models, or provide any custom model ID from the [Gemini model documentation](https://ai.google.dev/gemini-api/docs/pricing).
+* **Offline CLI Testing**: Test queries, wrapping, and responses directly from terminal (`scripts/run_cli.py`).
+* **Zero Maintenance**: Automatic markdown cleanup, optional local Q&A logging, and proxy URL support.
 
-## Preferences Explained
+---
 
-*   **Primary/Alternative Keyword**: Keywords to trigger the extension.
-    *   The *alternative* keyword is useful if your primary language uses a non-Latin script (e.g., Greek, Cyrillic, CJK, Arabic), allowing you to query without switching keyboard layouts first.
-*   **Gemini API Key**: **Required.** Obtain your free key from [Google AI Studio > Get API Key](https://aistudio.google.com/app/apikey). Keep this key private. The API provides a free tier sufficient for most users of this extension (often limited to ~15 requests per minute).
-*   **Custom API URL**: *(Optional)* Specify a custom API endpoint for proxy or enterprise environments. Leave empty to use the default Gemini API (`https://generativelanguage.googleapis.com/v1beta`). Your proxy should accept the API key via the `?key=` query parameter and maintain Gemini API compatibility.
-*   **Model**: Select the primary Gemini model to use. Options are ordered from fastest to most capable:
-    *   **`gemini-2.5-flash-lite`**: Fastest model, potentially less detailed responses.
-    *   **`gemini-2.0-flash`**: Legacy, fast & capable model.
-    *   **`gemini-2.5-flash`** (Default): Balanced speed and capability.
-    *   **`gemini-2.5-pro`**: More capable but noticeably slower model.
-    *   **`gemma-3n-e4b-it`**: Google's open model, fast.
-    *   **`gemma-3-27b-it`**: Google's open model, generally capable, slower.
-*   **Custom Model**: Specify any valid Gemini model name found in the [Gemini API documentation](https://ai.google.dev/gemini-api/docs/pricing) (e.g. `gemini-2.0-flash-lite`).  This overrides the "Model" selection above. Use this if the model list becomes outdated or you want to use a model that is not listed in the options.
-*   **Prompt Context (Optional)**: Add persistent instructions or background information that will be included with *every* query to guide the AI's responses.
-    *   *Examples:* `"Explain this concept like I'm 12 years old:"`, `"Translate the following text to <Language>:"`, `"Act as a helpful Linux terminal assistant:"`, `"Summarize the key points in bullet form:"`
-*   **Temperature [0-1] (Optional)**: Controls the randomness of the AI's output.
-    *   Lower values (e.g., `0.2`) produce more predictable, focused answers.
-    *   Higher values (e.g., `0.9`) result in more creative or diverse responses.
-    *   The default (`0.44`) aims for a balance of streamlined answers suitable for the compact Ulauncher interface.
-*   **Text Wrap Width (Characters)**: Sets the maximum number of characters per line for the answer displayed *in Ulauncher*. Does not affect the copied text.
-*   **Wide Script Width Factor**: (Optional) Multiplier applied to 'Text Wrap Width' for scripts detected as non-Latin (like Greek, CJK etc). A value below `1.0` (default: `0.96`) shortens lines to compensate for typically wider characters (e.g., Japanese might need ~0.5). Use `1.0` to disable adjustment, or values above `1.0` to fit more characters (e.g., Hebrew might need ~1.4). Allowed range: `0.2` to `1.8`.
-*   **Enable Q&A Logging**: Choose whether to save your questions and the AI's answers to a file.
-*   **Show 'Logged' Line**: If logging is enabled, this shows a confirmation line (e.g., "Q&A saved to gemini_direct_qa.log") below the answer in Ulauncher results. It aslso acts as a clickable link to open the log file directly.
-*   **Log File Path**: Specify the full path where the log file should be saved (e.g., `/home/user/logs/gemini.log` or `~/my_gemini_log.txt`). Uses `~/Documents/gemini_direct_qa.log` by default if logging is enabled and this field is empty.
-*   **Enable Debug Mode**: Shows verbose API request/response information, detailed errors, and logging issues in Ulauncher results and system logs (`~/.cache/ulauncher_cache/logs/`). Useful for troubleshooting.
-    *   *Tip:* If you are running Ulauncher from a terminal with the `-v` flag for verbose output, consider enabling this mode in preferences to get corresponding detailed extension logs.
+## Preferences Reference
 
+| Setting | Default | Description |
+| :--- | :--- | :--- |
+| **Primary Keyword** | `gm` | Keyword triggering the extension. |
+| **Alternative Keyword** | `γ` | Trigger for non-Latin layouts (e.g. Greek) without switching keyboard modes. |
+| **Gemini API Key** | *empty* | Google AI Studio API key. Falls back to `GEMINI_API_KEY` environment variable. |
+| **Custom API URL** | *empty* | Optional reverse proxy endpoint (Gemini REST-compatible). |
+| **Model** | `gemini-flash-latest` | **2.5 Flash-Lite**: Lightweight & fastest.<br>**3.8 Flash**: Pinned release for stable versioning.<br>**Flash Latest** *(Default)*: Rolling pointer to newest Flash releases. |
+| **Custom Model** | *empty* | Overrides dropdown with any model ID from the [Gemini model documentation](https://ai.google.dev/gemini-api/docs/pricing). |
+| **Prompt Context** | *empty* | Persistent system instructions included with every query (tone, audience, persona). |
+| **Temperature** | `1.0` | Controls response randomness `[0.0 - 2.0]`. Recommended: `1.0`. |
+| **Text Wrap Width** | `43` | Maximum character width for results display in Ulauncher. |
+| **Wide Script Factor** | `0.96` | Width multiplier for non-Latin scripts (e.g. Greek, CJK) `[0.2 - 1.8]`. |
+| **Enable Q&A Logging** | `false` | Save queries and answers to a local text file (auto-rotates at 1 MB). |
+| **Log File Path** | `~/Documents/...` | Destination path for logs (`~/Documents/gemini_direct_qa.log`). |
+| **Debug Mode** | `false` | Verbose API request and response diagnostics in logs. |
 
-## Acknowledgments
+---
 
-Development was inspired by prior work integrating AI into Ulauncher, particularly [ulauncher-gpt](https://github.com/seofernando25/ulauncher-gpt) by seofernando25. While Gemini Direct has evolved with distinct code and features, the core concept demonstrated by this extension was instrumental.
+## Changelog
+
+### 2026-09-09
+* **Native System Instructions**: Migrated to native `systemInstruction` API payload.
+* **Reasoning Parser**: Filter Flash Thinking scratchpad tokens (`thought: true`) from answers.
+* **Instant Latency**: Constrained reasoning budget for snappy launcher display.
+* **Environment Fallback**: Automatically loads `GEMINI_API_KEY` if preferences field is blank.
+* **Model Roster Update**: Streamlined models to `gemini-2.5-flash-lite`, `gemini-flash-latest` (default), and `gemini-3.8-flash`.
+* **Temperature Update**: Recommended temperature updated to 1.0 (standard range `[0.0 - 2.0]`).
+* **Log Auto-Rotation**: Added automatic size-based rotation at 1 MB (`.YYYY-MM-DD.log`) to prevent unbounded disk growth while keeping logs human-readable.
+* **Documentation & Prompt Streamlining**: Condensed system prompt and redesigned README for cognitive ergonomics and readability.
+* **Developer Tooling**: Added offline CLI test harness (`scripts/run_cli.py`) and manifest validator (`scripts/audit_manifest.py`).
+
+### 2025 Milestones
+* Custom proxy API URL support.
+* Multi-script heuristic line wrapping (`wide_script_factor`).
+* Markdown cleaner and Greek transliteration handling.
+
+---
 
 ## License
 
@@ -104,4 +74,4 @@ Development was inspired by prior work integrating AI into Ulauncher, particular
 ---
 *This extension is independently developed and not affiliated with Google.*
 *Use of the Gemini API is subject to Google's terms of service and rate limits.*
-*For issues or suggestions, please open an issue on the project's repository.*
+*For issues or suggestions, please open an issue or a discussion on the project's repository.*

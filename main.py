@@ -12,30 +12,35 @@ from ulauncher.api.shared.action.RenderResultListAction import RenderResultListA
 from ulauncher.api.shared.action.OpenUrlAction import OpenUrlAction
 from ulauncher.api.shared.action.CopyToClipboardAction import CopyToClipboardAction
 
-# Hardcoded system prompt that will be included in every request
-SYSTEM_PROMPT = """You are responding through an ephemeral interface with no follow-up capability so you need to provide a single comprehensive response that does not ask for further clarifications/information.
+# System prompt sent with each request
+SYSTEM_PROMPT = """Ephemeral launcher assistant. Provide a direct, self-contained answer in <1000 characters without follow-ups, disclaimers, or filler.
 
-Your primary task is: **Detect the language and script of the user's query and respond accordingly.**
-- If the query is in English, the response MUST be in English.
-- If the query is in a standard language script (e.g., Greek script, Cyrillic), respond in that SAME language and script.
-
-Special Case - Transliteration:
-If the query appears to be a *transliteration* (e.g., Greeklish, Romaji etc), follow these steps:
-1.  Identify the intended phrase and language.
-2.  Understand the *meaning* or question being asked.
-3.  **Formulate a comprehensive answer to the underlying meaning/question.**
-4.  **Respond ONLY with the answer, written entirely in the correct native script** (e.g., Greek script).
-
-Do NOT use transliteration or English in the final response for these transliteration cases.
-
-Be concise (try not to exceed 1000 characters for the answer part) but thorough. Ground answers with Google Search when possible. Do not include any disclaimers or unnecessary information. Provide a clear, direct answer suitable for a quick glance."""
+Language rules:
+- Respond in the language and script of the query.
+- Transliterated queries (e.g., Greeklish, Romaji): Answer ONLY in the corresponding native script (e.g., Greek). Never reply in transliteration or English for these."""
 
 def clean_markdown(text):
-    """Removes simple markdown formatting."""
+    """Removes markdown formatting to keep text clean and readable in Ulauncher."""
+    if not text:
+        return ""
+    # Strip fenced code blocks
+    text = re.sub(r'```[a-zA-Z0-9_-]*\n?', '', text)
+    # Strip inline code formatting
+    text = re.sub(r'`([^`]+)`', r'\1', text)
+    # Strip markdown headers (e.g. ### Header)
+    text = re.sub(r'^\s*#{1,6}\s+', '', text, flags=re.MULTILINE)
+    # Strip bold and italics
     text = re.sub(r'\*\*(.*?)\*\*', r'\1', text)
+    text = re.sub(r'__(.*?)__', r'\1', text)
     text = re.sub(r'\*(.*?)\*', r'\1', text)
-    text = re.sub(r'^\s*\*\s+', '• ', text, flags=re.MULTILINE)
-    return text
+    text = re.sub(r'_(.*?)_', r'\1', text)
+    # Convert unordered lists to bullet dots
+    text = re.sub(r'^\s*[-*+]\s+', '• ', text, flags=re.MULTILINE)
+    # Strip blockquotes
+    text = re.sub(r'^\s*>\s?', '', text, flags=re.MULTILINE)
+    # Collapse multiple consecutive blank lines
+    text = re.sub(r'\n{3,}', '\n\n', text)
+    return text.strip()
 
 # Modified: Added 'wide_script_factor' argument
 def format_for_display(text, max_width=44, wide_script_factor=0.96):
@@ -130,13 +135,29 @@ def format_for_display(text, max_width=44, wide_script_factor=0.96):
     return '\n'.join(lines)
 
 
+MAX_LOG_SIZE_BYTES = 1 * 1024 * 1024  # 1 MB log rotation threshold
+
 def log_qa(log_path, query, response, model_name, debug_mode=False):
-    """Logs the question and answer to a file."""
+    """Logs the question and answer to a file with automatic size-based rotation."""
     if not log_path:
         return False
     try:
         log_path = os.path.expanduser(log_path)
         os.makedirs(os.path.dirname(log_path), exist_ok=True)
+
+        # Auto-rotate log if it exceeds 1 MB threshold
+        if os.path.exists(log_path) and os.path.getsize(log_path) > MAX_LOG_SIZE_BYTES:
+            base, ext = os.path.splitext(log_path)
+            datestamp = time.strftime("%Y-%m-%d")
+            backup_path = f"{base}.{datestamp}{ext}"
+            counter = 1
+            while os.path.exists(backup_path):
+                backup_path = f"{base}.{datestamp}.{counter}{ext}"
+                counter += 1
+            os.replace(log_path, backup_path)
+            if debug_mode:
+                print(f"[Debug] Rotated log file: {log_path} -> {backup_path}")
+
         timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
         clean_response = clean_markdown(response)
         with open(log_path, 'a', encoding='utf-8') as f:
@@ -214,7 +235,7 @@ class KeywordQueryEventListener(EventListener):
         config = {
             'api_key': '',
             'custom_api_url': '',
-            'model': 'gemini-2.5-flash',
+            'model': 'gemini-flash-latest',
             'custom_model': '',
             'wrap_width': 43,
             'wide_script_factor': 0.96,
@@ -223,11 +244,13 @@ class KeywordQueryEventListener(EventListener):
             'debug_mode': False,
             'log_path': '',
             'prompt_context': '',
-            'temperature': 0.44
+            'temperature': 1.0
         }
 
         # Update config with preferences if they exist
-        config['api_key'] = prefs.get('api_key', config['api_key'])
+        config['api_key'] = prefs.get('api_key', config['api_key']).strip()
+        if not config['api_key']:
+            config['api_key'] = os.environ.get("GEMINI_API_KEY", "").strip()
         config['custom_api_url'] = prefs.get('custom_api_url', config['custom_api_url']).strip()
         config['model'] = prefs.get('model', config['model'])
         config['custom_model'] = prefs.get('custom_model', config['custom_model']).strip()
@@ -257,10 +280,10 @@ class KeywordQueryEventListener(EventListener):
             if temp_str:
                 temp_float = float(temp_str)
                 original_temp_value = temp_float
-                # Clamp temperature between 0.0 and 1.0
-                config['temperature'] = max(0.0, min(1.0, temp_float))
+                # Clamp temperature between 0.0 and 2.0 (standard Gemini range)
+                config['temperature'] = max(0.0, min(2.0, temp_float))
                 if original_temp_value != config['temperature']:
-                     print(f"[Info] Gemini Direct: Temperature '{original_temp_value}' is outside the range [0.0, 1.0]. "
+                     print(f"[Info] Gemini Direct: Temperature '{original_temp_value}' is outside the range [0.0, 2.0]. "
                            f"Using clamped value: {config['temperature']:.2f}")
             # else: keep default temperature
         except ValueError:
@@ -319,15 +342,26 @@ class KeywordQueryEventListener(EventListener):
             return f"{SYSTEM_PROMPT}\n\n{query}"
 
     def _call_gemini_api(self, config, query):
-        """Makes the API call to Gemini."""
+        """Makes the API call to Gemini with native systemInstruction and optimized latency."""
         base_url = config['custom_api_url'] if config['custom_api_url'] else "https://generativelanguage.googleapis.com/v1beta"
         url = f"{base_url}/{config['model_to_use']}:generateContent"
         headers = {"Content-Type": "application/json"}
         params = {"key": config['api_key']}
-        prompt = self._build_prompt(query, config['prompt_context'])
+
+        system_text = SYSTEM_PROMPT
+        if config['prompt_context']:
+            system_text = f"{SYSTEM_PROMPT}\n\nAdditional instructions:\n{config['prompt_context']}"
+
+        gen_config = {"temperature": config['temperature']}
+        # For standard Flash models with reasoning, set thinkingBudget to 0 to minimize latency for launcher responses
+        model_name = config.get('model_name', '').lower()
+        if 'flash' in model_name and 'lite' not in model_name:
+            gen_config["thinkingConfig"] = {"thinkingBudget": 0}
+
         payload = {
-            "contents": [{"parts": [{"text": prompt}]}],
-            "generationConfig": {"temperature": config['temperature']}
+            "systemInstruction": {"parts": [{"text": system_text}]},
+            "contents": [{"parts": [{"text": query}]}],
+            "generationConfig": gen_config
         }
 
         if config['debug_mode']:
@@ -386,9 +420,16 @@ class KeywordQueryEventListener(EventListener):
                 # and ensure content/parts exist before accessing text
                 content = candidates[0].get("content")
                 if content:
-                    parts = content.get("parts")
-                    if parts:
-                         response_text = parts[0].get("text", "")
+                    parts = content.get("parts", [])
+                    # Filter out internal thinking/scratchpad parts and collect answer text
+                    text_parts = [
+                        p.get("text", "") for p in parts
+                        if isinstance(p, dict) and not p.get("thought", False) and p.get("text")
+                    ]
+                    response_text = "".join(text_parts).strip()
+                    # Fallback in case all parts were tagged or text_parts was empty
+                    if not response_text and parts:
+                        response_text = parts[-1].get("text", "").strip()
 
 
             if response_text:
